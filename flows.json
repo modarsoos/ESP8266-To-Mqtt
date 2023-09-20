@@ -1,0 +1,740 @@
+[
+    {
+        "id": "a92595691bf60cc1",
+        "type": "mqtt in",
+        "z": "30fe57bb1fef7733",
+        "name": "ElternZimmer humidity",
+        "topic": "home/ElternZimmer/bme280/humidity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "569cae8339bc3808",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 1000,
+        "wires": [
+            [
+                "4f1451331f4c0dc9",
+                "4ff59a1aa2782ca8"
+            ]
+        ]
+    },
+    {
+        "id": "f6eb7651684c19f2",
+        "type": "mqtt in",
+        "z": "30fe57bb1fef7733",
+        "name": "ElternZimmer temperature",
+        "topic": "home/ElternZimmer/bme280/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "569cae8339bc3808",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 230,
+        "y": 880,
+        "wires": [
+            [
+                "75c640349059bda5",
+                "7f0de7f8bd194097",
+                "4bb495b7abfa3fa7",
+                "26e1314e0c66f302"
+            ]
+        ]
+    },
+    {
+        "id": "5dfe790c9f8ebaf1",
+        "type": "mqtt in",
+        "z": "30fe57bb1fef7733",
+        "name": "ElternZimmer co2",
+        "topic": "home/ElternZimmer/mhz19/co2",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "569cae8339bc3808",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 1040,
+        "wires": [
+            [
+                "5608cb560926eb98",
+                "ebddb53a352bb784",
+                "2036c07f78a42345"
+            ]
+        ]
+    },
+    {
+        "id": "75c640349059bda5",
+        "type": "ui_text",
+        "z": "30fe57bb1fef7733",
+        "group": "1401ac60b1c59f55",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "درجة الحرارة",
+        "format": "{{msg.payload}} &degC",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Tahoma,Geneva,sans-serif",
+        "fontSize": "14",
+        "color": "#000000",
+        "x": 780,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "4f1451331f4c0dc9",
+        "type": "ui_text",
+        "z": "30fe57bb1fef7733",
+        "group": "1401ac60b1c59f55",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "الرطوبة",
+        "format": "{{msg.payload}} %",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Tahoma,Geneva,sans-serif",
+        "fontSize": "14",
+        "color": "#000000",
+        "x": 790,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "5608cb560926eb98",
+        "type": "ui_text",
+        "z": "30fe57bb1fef7733",
+        "group": "1401ac60b1c59f55",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "ثاني أكسيد الكربون",
+        "format": "{{msg.payload}} PPM",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Tahoma,Geneva,sans-serif",
+        "fontSize": "14",
+        "color": "#000000",
+        "x": 760,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "7f0de7f8bd194097",
+        "type": "timeout",
+        "z": "30fe57bb1fef7733",
+        "name": "Tempsensor not working",
+        "outtopic": "Alarm",
+        "outsafe": "",
+        "outwarning": "",
+        "outunsafe": "Tempsensor not working",
+        "warning": "5",
+        "timer": "43200",
+        "repeat": false,
+        "again": true,
+        "x": 470,
+        "y": 820,
+        "wires": [
+            [
+                "1aa3d48129de5a54"
+            ]
+        ]
+    },
+    {
+        "id": "1aa3d48129de5a54",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "send message",
+        "func": "msg.payload =\n{\n    chatId: 755699598,\n    type: \"message\",\n    content:\"Temp sensor is not working for 12 Hours in ElternZimmer, check the power supply!!\"\n}\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 820,
+        "wires": [
+            [
+                "79490518c4b5b7e1"
+            ]
+        ]
+    },
+    {
+        "id": "ebddb53a352bb784",
+        "type": "influxdb out",
+        "z": "30fe57bb1fef7733",
+        "influxdb": "e6fc0a589a15b877",
+        "name": "co2",
+        "measurement": "ElternZimmer/co2",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Megabyte",
+        "bucket": "Sensors",
+        "x": 530,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "4bb495b7abfa3fa7",
+        "type": "influxdb out",
+        "z": "30fe57bb1fef7733",
+        "influxdb": "e6fc0a589a15b877",
+        "name": "temperature",
+        "measurement": "ElternZimmer/temperature",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Megabyte",
+        "bucket": "Sensors",
+        "x": 510,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "4ff59a1aa2782ca8",
+        "type": "influxdb out",
+        "z": "30fe57bb1fef7733",
+        "influxdb": "e6fc0a589a15b877",
+        "name": "humidity",
+        "measurement": "ElternZimmer/humidity",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Megabyte",
+        "bucket": "Sensors",
+        "x": 520,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "79490518c4b5b7e1",
+        "type": "link out",
+        "z": "30fe57bb1fef7733",
+        "name": "link out 9",
+        "mode": "link",
+        "links": [
+            "27627ecdd0d8305a"
+        ],
+        "x": 1045,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "26e1314e0c66f302",
+        "type": "ui_gauge",
+        "z": "30fe57bb1fef7733",
+        "name": "درجة الحرارة",
+        "group": "1401ac60b1c59f55",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "C",
+        "format": "{{value | number:2}} °",
+        "min": "-10",
+        "max": "40",
+        "colors": [
+            "#3f97d9",
+            "#00e61b",
+            "#ca3838"
+        ],
+        "seg1": "20",
+        "seg2": "30",
+        "diff": false,
+        "className": "",
+        "x": 780,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "372f35cf0f7c85a8",
+        "type": "smooth",
+        "z": "30fe57bb1fef7733",
+        "name": "",
+        "property": "payload",
+        "action": "mean",
+        "count": "10",
+        "round": "",
+        "mult": "single",
+        "reduce": true,
+        "x": 380,
+        "y": 1140,
+        "wires": [
+            [
+                "5d0d88532c0d429b"
+            ]
+        ]
+    },
+    {
+        "id": "144e00f6bd821fc4",
+        "type": "trigger",
+        "z": "30fe57bb1fef7733",
+        "name": "CO2 in Eltern Zimmer is high.",
+        "op1": "CO2 in Eltern Zimmer is high",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "0",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "ms",
+        "reset": "false",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 710,
+        "y": 1140,
+        "wires": [
+            [
+                "c7f8c08f86a7f6c6",
+                "3694f17390ebbacc",
+                "3e203f7ab96b1b1c"
+            ]
+        ]
+    },
+    {
+        "id": "c7f8c08f86a7f6c6",
+        "type": "ui_toast",
+        "z": "30fe57bb1fef7733",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "Information",
+        "name": "Information",
+        "x": 950,
+        "y": 1100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3694f17390ebbacc",
+        "type": "pushbullet",
+        "z": "30fe57bb1fef7733",
+        "config": "771503a67c77d3f6",
+        "pushtype": "note",
+        "title": "SmartHome",
+        "chan": "",
+        "name": "SmartHome",
+        "x": 950,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "583a9dfb619985f9",
+        "type": "inject",
+        "z": "30fe57bb1fef7733",
+        "name": "load StandardValue",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1800",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1200",
+        "payloadType": "num",
+        "x": 240,
+        "y": 1180,
+        "wires": [
+            [
+                "22d6f58029b42f38"
+            ]
+        ]
+    },
+    {
+        "id": "22d6f58029b42f38",
+        "type": "ui_numeric",
+        "z": "30fe57bb1fef7733",
+        "name": "",
+        "label": "تحديد تجاوز العتبة",
+        "tooltip": "إذا تم تجاوز العتبة، فيجب إضافة هواء نقي إضافي لتجديد الهواء.",
+        "group": "1401ac60b1c59f55",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}} PPM",
+        "min": "400",
+        "max": "5000",
+        "step": "100",
+        "className": "",
+        "x": 490,
+        "y": 1180,
+        "wires": [
+            [
+                "73bc0a5fdba09487"
+            ]
+        ]
+    },
+    {
+        "id": "c043367fe2fc0295",
+        "type": "link out",
+        "z": "30fe57bb1fef7733",
+        "name": "link out 10",
+        "mode": "link",
+        "links": [
+            "27627ecdd0d8305a"
+        ],
+        "x": 1105,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "d42189895bb2704b",
+        "type": "inject",
+        "z": "30fe57bb1fef7733",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 1100,
+        "wires": [
+            [
+                "5d0d88532c0d429b"
+            ]
+        ]
+    },
+    {
+        "id": "f1f21436e95d4324",
+        "type": "mqtt in",
+        "z": "30fe57bb1fef7733",
+        "name": "ElternZimmer pressure",
+        "topic": "home/ElternZimmer/bme280/pressure",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "569cae8339bc3808",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 940,
+        "wires": [
+            [
+                "a5eb091143229547",
+                "e27ba035d31de5b0",
+                "078d0367cfc899ea"
+            ]
+        ]
+    },
+    {
+        "id": "078d0367cfc899ea",
+        "type": "ui_text",
+        "z": "30fe57bb1fef7733",
+        "group": "1401ac60b1c59f55",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "الضغط",
+        "format": "{{msg.payload}} hPa",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Tahoma,Geneva,sans-serif",
+        "fontSize": "14",
+        "color": "#000000",
+        "x": 790,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "9a725dfe8b635d6c",
+        "type": "mqtt in",
+        "z": "30fe57bb1fef7733",
+        "name": "ElternZimmer Altitude",
+        "topic": "home/ElternZimmer/bme280/Altitude",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "569cae8339bc3808",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 1220,
+        "wires": [
+            [
+                "9821d835c7168c3b",
+                "d92b930ca64dc4a1",
+                "b6948968eec584fa"
+            ]
+        ]
+    },
+    {
+        "id": "d92b930ca64dc4a1",
+        "type": "ui_text",
+        "z": "30fe57bb1fef7733",
+        "group": "1401ac60b1c59f55",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "ارتفاع",
+        "format": "{{msg.payload}} m",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Tahoma,Geneva,sans-serif",
+        "fontSize": "14",
+        "color": "#000000",
+        "x": 790,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "9821d835c7168c3b",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "Alt to number",
+        "func": "//سعر كيلو الكهرباء في أوتفايلر\n//0.3682 سينت للكيلو واط الساعي\n//هذه المعادلة تعطيني ناتج ضرب صرف استهلاك الكهرباء\n// ابتداءً من رأس الشهر بسعر الكيلو واط\n//Arbeitspreis: 0,3682 Cent / kWh\n\nmsg.payload = Number((msg.payload * 1).toFixed(2))\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2036c07f78a42345",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "WhonZimmerCo2",
+        "func": "// shellies / <model>-<deviceid>/relay/0/energy\n// to report amount of energy consumed in Watt-minute\n// كمية الطاقة المستهلكة بالواط-دقيقة\n\n//تم تقسيم على 60 حتى يعطيني ناتج الساعة\n//تم التقسيم على 1000 حتى يعطيني ناتج كيلو واط وليس واط\n//مثال: الناتج يكون 2.37 كيلو واط/ساعة\n\n\n\n// msg.payload = Number(((msg.payload/60/1000).toFixed(2)))\n\nglobal.set('ElternZimmerCo2', msg.payload)\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 1140,
+        "wires": [
+            [
+                "372f35cf0f7c85a8"
+            ]
+        ]
+    },
+    {
+        "id": "5d0d88532c0d429b",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "check",
+        "func": "var ElternZimmerCo2 = global.get('ElternZimmerCo2')\nvar maxElternZimmerCo2 = global.get('maxElternZimmerCo2')\n\nmsg.payload = ElternZimmerCo2 > maxElternZimmerCo2;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 1140,
+        "wires": [
+            [
+                "144e00f6bd821fc4"
+            ]
+        ]
+    },
+    {
+        "id": "3e203f7ab96b1b1c",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "send message",
+        "func": "var ElternZimmerCo2 = global.get('ElternZimmerCo2')\nvar threshold = global.get('maxElternZimmerCo2')\n\nmsg.payload =\n{\n    chatId: 755699598,\n    type: \"message\",\n    content: `${msg.payload}: ${ElternZimmerCo2} PPM\\n\\r\nthreshold = ${threshold}`\n}\n\nreturn msg;\n\n\n// should be as close to 400 ppm\n//     (outdoor CO2 concentration) as possible,\n//     and no more than 700 ppm above outdoor air.\n//     If the threshold is exceeded,\n//     additional fresh air should be added to renew the air.",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 1140,
+        "wires": [
+            [
+                "c043367fe2fc0295"
+            ]
+        ]
+    },
+    {
+        "id": "73bc0a5fdba09487",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "save maxHumiBath",
+        "func": "// context.global.maxKinderCo2 = msg.payload;\nglobal.set('maxElternZimmerCo2', msg.payload)\nnode.status({ fill: \"red\", shape: \"ring\", text: msg.payload });\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 1180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e27ba035d31de5b0",
+        "type": "function",
+        "z": "30fe57bb1fef7733",
+        "name": "press to number",
+        "func": "//سعر كيلو الكهرباء في أوتفايلر\n//0.3682 سينت للكيلو واط الساعي\n//هذه المعادلة تعطيني ناتج ضرب صرف استهلاك الكهرباء\n// ابتداءً من رأس الشهر بسعر الكيلو واط\n//Arbeitspreis: 0,3682 Cent / kWh\n\nmsg.payload = Number((msg.payload).toFixed(2))\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b6948968eec584fa",
+        "type": "debug",
+        "z": "30fe57bb1fef7733",
+        "name": "ارتفاع",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "a5eb091143229547",
+        "type": "debug",
+        "z": "30fe57bb1fef7733",
+        "name": "الضغط",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "569cae8339bc3808",
+        "type": "mqtt-broker",
+        "name": "MQTT",
+        "broker": "192.168.178.106",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1401ac60b1c59f55",
+        "type": "ui_group",
+        "name": "غرفة الآباء",
+        "tab": "7dcefa0c857fe86f",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e6fc0a589a15b877",
+        "type": "influxdb",
+        "hostname": "192.168.178.116",
+        "port": "8086",
+        "protocol": "http",
+        "database": "Sensors",
+        "name": "Influx DB",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://192.168.178.116:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "771503a67c77d3f6",
+        "type": "pushbullet-config",
+        "name": "To Mobile"
+    },
+    {
+        "id": "7dcefa0c857fe86f",
+        "type": "ui_tab",
+        "name": "حالة الطقس",
+        "icon": "wi-wu-cloudy",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
